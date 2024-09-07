@@ -2,6 +2,7 @@ package davidmateus.com.alugacasa.controllers;
 
 import davidmateus.com.alugacasa.model.Tenant;
 import davidmateus.com.alugacasa.service.TenantService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/tenants")
 public class TenantController {
+    @Autowired
     private TenantService tenantService;
 
     public TenantController(TenantService tenantService) {
@@ -27,7 +29,7 @@ public class TenantController {
     }
     @PostMapping
     public  Tenant createTenant(@RequestBody Tenant tenant){
-        return tenantService.createTenant(tenant)
+        return tenantService.createTenant(tenant);
     }
     @PutMapping("/{id}")
     public Tenant updateTenant(@PathVariable Long id, @RequestBody Tenant updateTenant){
