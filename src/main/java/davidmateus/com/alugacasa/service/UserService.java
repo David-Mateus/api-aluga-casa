@@ -1,5 +1,6 @@
 package davidmateus.com.alugacasa.service;
 
+import davidmateus.com.alugacasa.exceptions.ResourceNotFoundException;
 import davidmateus.com.alugacasa.model.User;
 import davidmateus.com.alugacasa.repository.TenantRepository;
 import davidmateus.com.alugacasa.repository.UserRepository;
@@ -16,13 +17,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
-
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-    public Optional<User> getUserById(Long userId){
-        return userRepository.findById(userId);
+
+    public User getUserById(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(()-> new ResourceNotFoundException("Not records found for this ID!"));
     }
     public User createUser(User user){
         user.setUserId(null);
@@ -35,9 +36,11 @@ public class UserService {
                     user.setPassword(updateUser.getPassword());
                     return userRepository.save(user);
                 })
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
     public void deleteUser(Long userId){
-        userRepository.deleteById(userId);
+        var entity = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        userRepository.delete(entity);
     }
 }

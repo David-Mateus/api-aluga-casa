@@ -1,5 +1,6 @@
 package davidmateus.com.alugacasa.service;
 
+import davidmateus.com.alugacasa.exceptions.ResourceNotFoundException;
 import davidmateus.com.alugacasa.model.Tenant;
 import davidmateus.com.alugacasa.model.User;
 import davidmateus.com.alugacasa.repository.TenantRepository;
@@ -22,8 +23,9 @@ public class TenantService {
     public List<Tenant> getAllTenants(){
         return tenantRepository.findAll();
     }
-    public Optional<Tenant> getTenantById(Long tenantId){
-        return tenantRepository.findById(tenantId);
+    public Tenant getTenantById(Long tenantId){
+        return tenantRepository.findById(tenantId)
+                .orElseThrow(()-> new ResourceNotFoundException("Not records found for this ID!"));
     }
     public  Tenant createTenant(Tenant tenant){
 
@@ -39,9 +41,11 @@ public class TenantService {
                     tenant.setDurationContract(updatedTenant.getDurationContract());
                     return tenantRepository.save(tenant);
                 })
-                .orElseThrow(() -> new RuntimeException("Tenant not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
     }
     public void deleteTenant(Long tenantId){
-        tenantRepository.deleteById(tenantId);
+        var entity = tenantRepository.findById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
+        tenantRepository.delete(entity);
     }
 }

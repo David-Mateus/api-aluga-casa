@@ -24,7 +24,7 @@ public class SituationController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Situation> getSituation(@PathVariable Long id){
+    public Situation getSituation(@PathVariable Long id){
         return situationService.getSituationById(id);
     }
     @PostMapping

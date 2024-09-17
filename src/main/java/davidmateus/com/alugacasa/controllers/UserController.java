@@ -27,7 +27,7 @@ public class UserController {
     }
     // dados so pode ser passado no path
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
+    public User getUserById(@PathVariable Long id){
         return userService.getUserById(id);
     }
     //dados pode ser passado no body

@@ -1,5 +1,6 @@
 package davidmateus.com.alugacasa.service;
 
+import davidmateus.com.alugacasa.exceptions.ResourceNotFoundException;
 import davidmateus.com.alugacasa.model.Situation;
 import davidmateus.com.alugacasa.repository.SituationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,9 @@ public class SituationService {
     public List<Situation> getAllSituation(){
         return situationRepository.findAll();
     }
-    public Optional<Situation> getSituationById(Long id){
-        return situationRepository.findById(id);
+    public Situation getSituationById(Long id){
+        return situationRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Not records found for this ID!"));
     }
     public Situation createPost(Situation situation){
         return situationRepository.save(situation);
@@ -31,9 +33,11 @@ public class SituationService {
                     situation.setStatus(updateSituation.getStatus());
                     return situationRepository.save(situation);
                 })
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Situation not found"));
     }
     public void deleteSituation(Long id){
-        situationRepository.deleteById(id);
+        var entity = situationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        situationRepository.delete(entity);
     }
 }
