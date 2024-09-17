@@ -10,12 +10,11 @@ import java.util.Optional;
 
 @Service
 public class SituationService {
+
     @Autowired
     private SituationRepository situationRepository;
 
-    public SituationService(SituationRepository situationRepository) {
-        this.situationRepository = situationRepository;
-    }
+
     public List<Situation> getAllSituation(){
         return situationRepository.findAll();
     }

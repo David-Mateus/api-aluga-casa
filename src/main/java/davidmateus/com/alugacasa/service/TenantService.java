@@ -1,6 +1,7 @@
 package davidmateus.com.alugacasa.service;
 
 import davidmateus.com.alugacasa.model.Tenant;
+import davidmateus.com.alugacasa.model.User;
 import davidmateus.com.alugacasa.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,13 @@ import java.util.UUID;
 
 @Service
 public class TenantService {
+
     @Autowired
     private TenantRepository tenantRepository;
+    @Autowired
+    private UserService userService;
 
-    public TenantService(TenantRepository tenantRepository) {
-        this.tenantRepository = tenantRepository;
-    }
+
     public List<Tenant> getAllTenants(){
         return tenantRepository.findAll();
     }
@@ -24,6 +26,7 @@ public class TenantService {
         return tenantRepository.findById(tenantId);
     }
     public  Tenant createTenant(Tenant tenant){
+
         return tenantRepository.save(tenant);
     }
     public  Tenant updateTenant(Long tenantId, Tenant updatedTenant){

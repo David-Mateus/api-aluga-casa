@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "tb_situation")
 public class Situation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "situation_id")
     private  Long id;
 
@@ -20,6 +20,15 @@ public class Situation {
     @ManyToOne
     @JoinColumn(name = "tenant_id")
     private Tenant tenant;
+
+    public Situation(){}
+
+    public Situation(Long id, String month, String status, Tenant tenant) {
+        this.id = id;
+        this.month = month;
+        this.status = status;
+        this.tenant = tenant;
+    }
 
     public Long getId() {
         return id;

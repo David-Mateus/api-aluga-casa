@@ -1,7 +1,9 @@
 package davidmateus.com.alugacasa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -9,24 +11,36 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name ="user_id" )
-    private UUID userId;
 
-    @Column(unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="user_id", unique = true )
+    private Long userId;
+
+    @Column(name = "username", length = 100, nullable = false, unique = true)
     private String username;
-    @Column(name = "user_password")
+
+    @Column(name = "user_password", length = 60, nullable = false)
     private String password;
 
+    // user quem ta mapeamento é la no tenant = User user
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Tenant> tenants;
+    private List<Tenant> tenants = new ArrayList<Tenant>();
 
-    public UUID getUserId() {
+    public User(){}
+
+    public User(Long userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+
+    }
+
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -46,6 +60,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
     public List<Tenant> getTenants() {
         return tenants;
     }

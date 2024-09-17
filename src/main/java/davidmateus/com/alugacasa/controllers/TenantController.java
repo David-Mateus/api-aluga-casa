@@ -3,7 +3,7 @@ package davidmateus.com.alugacasa.controllers;
 import davidmateus.com.alugacasa.model.Tenant;
 import davidmateus.com.alugacasa.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
+//import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
