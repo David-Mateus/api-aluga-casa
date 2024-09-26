@@ -17,7 +17,7 @@ public class Situation {
     @Column(name = "status", nullable = false, length = 15)
     private  String status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tenant_id")
     private Tenant tenant;
 

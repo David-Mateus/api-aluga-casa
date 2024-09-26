@@ -1,5 +1,6 @@
 package davidmateus.com.alugacasa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -14,23 +15,24 @@ public class Tenant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tenant_id",  unique = true)
     private Long id;
-    @Column(name = "name", length = 60, nullable = false, unique = true)
+    @Column(name = "name", length = 60, nullable = false)
     private String name;
-    @Column(name = "address", length = 50, nullable = false, unique = true)
+    @Column(name = "address", length = 50, nullable = false)
     private String address;
-    @Column(name = "phone", length = 20, nullable = false, unique = true)
+    @Column(name = "phone", length = 20, nullable = false)
     private String phone;
-    @Column(name = "email", length = 60, nullable = false, unique = true)
+    @Column(name = "email", length = 60, nullable = false)
     private String email;
-    @Column(name = "duration", length = 20, nullable = false, unique = true)
+    @Column(name = "duration", length = 20, nullable = false)
     private Integer durationContract;
 
     //Varios inquilinos pode ser de um usuario
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Situation> situations = new ArrayList<Situation>();
 
     public Tenant(){}

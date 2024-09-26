@@ -1,14 +1,16 @@
 package davidmateus.com.alugacasa.service;
 
+import davidmateus.com.alugacasa.dtos.UserDTO;
 import davidmateus.com.alugacasa.exceptions.ResourceNotFoundException;
+import davidmateus.com.alugacasa.mapper.DozerMapper;
 import davidmateus.com.alugacasa.model.User;
-import davidmateus.com.alugacasa.repository.TenantRepository;
 import davidmateus.com.alugacasa.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 // model -> repository -> service(camada de negocios) -> controller
 @Service
@@ -17,24 +19,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
+    @Transactional
+    public List<UserDTO> getAllUsers(){
 
-    public User getUserById(Long userId){
-        return userRepository.findById(userId)
+        return DozerMapper.parseListObject(userRepository.findAll(), UserDTO.class);
+    }
+    @Transactional
+    public UserDTO getUserById(Long userId){
+        var entity = userRepository.findById(userId)
                 .orElseThrow(()-> new ResourceNotFoundException("Not records found for this ID!"));
+        return DozerMapper.parseObject(entity, UserDTO.class);
     }
-    public User createUser(User user){
-        user.setUserId(null);
-        return userRepository.save(user);
+    public UserDTO createUser(UserDTO user){
+
+        var entity = DozerMapper.parseObject(user, User.class);
+        return DozerMapper.parseObject(userRepository.save(entity), UserDTO.class);
     }
-    public User updateUser(Long userId, User updateUser){
+    public UserDTO updateUser(Long userId, UserDTO updateUser){
         return userRepository.findById(userId)
                 .map(user -> {
                     user.setUsername(updateUser.getUsername());
                     user.setPassword(updateUser.getPassword());
-                    return userRepository.save(user);
+                    return DozerMapper.parseObject(userRepository.save(user), UserDTO.class);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }

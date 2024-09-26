@@ -1,6 +1,7 @@
 package davidmateus.com.alugacasa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ public class User {
     private String password;
 
     // user quem ta mapeamento é la no tenant = User user
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Tenant> tenants = new ArrayList<Tenant>();
 
     public User(){}

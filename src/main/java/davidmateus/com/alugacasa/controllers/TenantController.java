@@ -1,13 +1,12 @@
 package davidmateus.com.alugacasa.controllers;
 
-import davidmateus.com.alugacasa.model.Tenant;
+import davidmateus.com.alugacasa.dtos.TenantDTO;
 import davidmateus.com.alugacasa.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.access.method.P;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/tenants")
@@ -15,24 +14,24 @@ public class TenantController {
     @Autowired
     private TenantService tenantService;
 
-    public TenantController(TenantService tenantService) {
-        this.tenantService = tenantService;
-    }
+//    public TenantController(TenantService tenantService) {
+//        this.tenantService = tenantService;
+//    }
 
     @GetMapping
-    public List<Tenant> getAllTenants(){
+    public List<TenantDTO> getAllTenants(){
         return tenantService.getAllTenants();
     }
     @GetMapping("/{id}")
-    public Tenant getTenantById(@PathVariable Long id){
+    public TenantDTO getTenantById(@PathVariable Long id){
         return tenantService.getTenantById(id);
     }
     @PostMapping
-    public  Tenant createTenant(@RequestBody Tenant tenant){
+    public TenantDTO createTenant(@RequestBody TenantDTO tenant){
         return tenantService.createTenant(tenant);
     }
     @PutMapping("/{id}")
-    public Tenant updateTenant(@PathVariable Long id, @RequestBody Tenant updateTenant){
+    public TenantDTO updateTenant(@PathVariable Long id, @RequestBody TenantDTO updateTenant){
         return tenantService.updateTenant(id, updateTenant);
     }
     @DeleteMapping("/{id}")

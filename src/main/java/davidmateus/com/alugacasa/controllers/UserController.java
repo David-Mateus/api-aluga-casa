@@ -1,14 +1,13 @@
 package davidmateus.com.alugacasa.controllers;
 
 
-import davidmateus.com.alugacasa.model.User;
+import davidmateus.com.alugacasa.dtos.UserDTO;
 import davidmateus.com.alugacasa.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -17,26 +16,27 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+//    public UserController(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
     // dados so pode ser passado no path
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
+    public UserDTO getUserById(@PathVariable(value = "id") Long id){
         return userService.getUserById(id);
     }
     //dados pode ser passado no body
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public UserDTO createUser(@RequestBody UserDTO user){
         return userService.createUser(user);
     }
-    @PutMapping
-    public User updateUser(@PathVariable Long id, @RequestBody User updateUser){
+
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO updateUser){
         return userService.updateUser(id, updateUser);
     }
     @DeleteMapping("/{id}")

@@ -1,13 +1,16 @@
 package davidmateus.com.alugacasa.service;
 
+import davidmateus.com.alugacasa.dtos.SituationDTO;
 import davidmateus.com.alugacasa.exceptions.ResourceNotFoundException;
+import davidmateus.com.alugacasa.mapper.DozerMapper;
 import davidmateus.com.alugacasa.model.Situation;
 import davidmateus.com.alugacasa.repository.SituationRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SituationService {
@@ -15,23 +18,29 @@ public class SituationService {
     @Autowired
     private SituationRepository situationRepository;
 
+    @Transactional
+    public List<SituationDTO> getAllSituation(){
 
-    public List<Situation> getAllSituation(){
-        return situationRepository.findAll();
+        return DozerMapper.parseListObject(situationRepository.findAll(), SituationDTO.class);
     }
-    public Situation getSituationById(Long id){
-        return situationRepository.findById(id)
+    @Transactional
+    public SituationDTO getSituationById(Long id){
+        var entity = situationRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Not records found for this ID!"));
+        return DozerMapper.parseObject(entity, SituationDTO.class);
     }
-    public Situation createPost(Situation situation){
-        return situationRepository.save(situation);
+    public SituationDTO createPost(SituationDTO situation){
+        var entity = DozerMapper.parseObject(situation, Situation.class);
+        return DozerMapper.parseObject(situationRepository.save(entity), SituationDTO.class);
     }
-    public Situation updateSituation(Long id, Situation updateSituation){
+
+    public SituationDTO updateSituation(Long id, SituationDTO updateSituation){
         return situationRepository.findById(id)
                 .map(situation -> {
                     situation.setMonth(updateSituation.getMonth());
                     situation.setStatus(updateSituation.getStatus());
-                    return situationRepository.save(situation);
+                    Hibernate.initialize(situation.getTenant());
+                    return DozerMapper.parseObject(situationRepository.save(situation), SituationDTO.class);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Situation not found"));
     }
