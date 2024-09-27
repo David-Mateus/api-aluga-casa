@@ -1,0 +1,1 @@
+INSERT INTO `tb_users` VALUES (1,'1235','david_updateee'),(2,'1235','david_mateus2'),(3,'1235','DOZERmAPPER');

@@ -1,0 +1,1 @@
+INSERT INTO `tb_tenant` VALUES (1,'Rua AdolfTo Cami55nha3',1,'marcelo-mateuTs09@hotm55ail.com3','MarceloT366','9999-99559T93',1),(2,'Rua AdolfTo Cami55nha3',1,'marcelo-mateuTs09@hotm55ail.com3','MarceloT366','9999-99559T93',2),(3,'Sol de camaraaaaaaaaaaas',30,'shrilleyramalho@hotm55ail.com32','Shirlley Souza ramalhooooooo','9999-99559T932',2);
