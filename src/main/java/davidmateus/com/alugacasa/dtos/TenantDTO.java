@@ -3,11 +3,13 @@ package davidmateus.com.alugacasa.dtos;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import davidmateus.com.alugacasa.dtos.UserDTO;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TenantDTO {
+public class TenantDTO extends RepresentationModel<TenantDTO> {
 
     private Long id;
 

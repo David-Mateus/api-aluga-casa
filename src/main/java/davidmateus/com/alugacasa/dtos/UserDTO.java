@@ -1,14 +1,21 @@
 package davidmateus.com.alugacasa.dtos;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import davidmateus.com.alugacasa.model.Tenant;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-public class UserDTO {
+// Caso desejar mudar a ordem de como os elemetos são retornados:
+//@JsonPropertyOrder({"username"})
+//@JsonProperty: colocar acima dos prives para caso queira mudar o nome do retorno
+//@JsonIgnore não sera exibido
+public class UserDTO extends RepresentationModel<UserDTO>  {
     private Long userId;
     private String username;
     private String password;
