@@ -2,6 +2,7 @@ package davidmateus.com.alugacasa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import davidmateus.com.alugacasa.enums.ProfileEnum;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_users")
+
 public class User {
 
     @Id
@@ -29,13 +31,37 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Tenant> tenants = new ArrayList<Tenant>();
 
-    public User(){}
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_profiles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns =  @JoinColumn(name = "profile_id"))
+    private List<Profile> profiles = new ArrayList<>();
 
+    // Construtor padrão
+    public User() {}
+
+    // Construtor sem profiles
     public User(Long userId, String username, String password) {
         this.userId = userId;
         this.username = username;
         this.password = password;
+    }
 
+    // Construtor com profiles
+    public User(Long userId, String username, String password, List<Profile> profiles) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.profiles = profiles;
+    }
+
+    // Getters e Setters para profiles
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
     }
 
     public Long getUserId() {

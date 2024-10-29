@@ -58,6 +58,8 @@ public class UserController {
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
     })
+    //Cors de forma local
+    //@CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
     public UserDTO getUserById(@PathVariable(value = "id") Long id){
         return userService.getUserById(id);
     }
@@ -71,6 +73,7 @@ public class UserController {
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
     })
+    //@CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
     public UserDTO createUser(@RequestBody UserDTO user){
         return userService.createUser(user);
     }

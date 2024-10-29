@@ -9,6 +9,7 @@ import davidmateus.com.alugacasa.repository.UserRepository;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -18,7 +19,8 @@ import java.util.List;
 // model -> repository -> service(camada de negocios) -> controller
 @Service
 public class UserService {
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
 
@@ -46,6 +48,7 @@ public class UserService {
         var entity = DozerMapper.parseObject(user, User.class);
         var dto =  DozerMapper.parseObject(userRepository.save(entity), UserDTO.class);
         dto.add(linkTo(methodOn(UserController.class).getUserById(dto.getUserId())).withSelfRel());
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         return dto;
     }
     public UserDTO updateUser(Long userId, UserDTO updateUser){
@@ -53,6 +56,7 @@ public class UserService {
                 .map(user -> {
                     user.setUsername(updateUser.getUsername());
                     user.setPassword(updateUser.getPassword());
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
                     var dto =DozerMapper.parseObject(userRepository.save(user), UserDTO.class);
                     dto.add(linkTo(methodOn(UserController.class).getUserById(dto.getUserId())).withSelfRel());
                     return dto;
